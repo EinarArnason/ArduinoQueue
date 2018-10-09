@@ -44,11 +44,11 @@ public:
 		}
 	}
 
-	void enqueue(T item) {
+	// Returns false if memory is full, otherwise true
+	bool enqueue(T item) {
 		Node* node = new Node;
 		if (node == NULL) {
-			Serial.println("Out of memory");
-			return;
+			return false;
 		}
 
 		node->item = item;
@@ -56,11 +56,13 @@ public:
 		if (head == NULL) {
 			head = node;
 			tail = node;
-			return;
+			return true;
 		}
 
 		tail->next = node;
 		tail = node;
+
+		return true;
 	}
 
 	/*
