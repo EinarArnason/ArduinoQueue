@@ -9,13 +9,13 @@
 #pragma once
 
 #if defined(ARDUINO) && ARDUINO >= 100
-#include "Arduino.h"
+#include "arduino.h"
 #else
 #include "WProgram.h"
 #endif
 
 template <typename T>
-class Queue {
+class DataQueue {
 	class Node {
 	public:
 		T item;
@@ -31,13 +31,19 @@ class Queue {
 	};
 	Node* head;
 	Node* tail;
+  uint8_t max_items;
+  uint8_t items;
 public:
-	Queue() {
+	DataQueue(int m_size = 100) {
 		head = NULL;
 		tail = NULL;
+    if (m_size > 255) m_size = 255;
+    if (m_size < 0) m_size = 0;
+    max_items = m_size;
+    items = 0;
 	}
 
-	~Queue() {
+	~DataQueue() {
 		for (Node* node = head; node != NULL; node = head) {
 			head = node->next;
 			delete node;
@@ -46,6 +52,10 @@ public:
 
 	// Returns false if memory is full, otherwise true
 	bool enqueue(T item) {
+    if (items == max_items) {
+      return false;
+    }
+    
 		Node* node = new Node;
 		if (node == NULL) {
 			return false;
@@ -56,12 +66,14 @@ public:
 		if (head == NULL) {
 			head = node;
 			tail = node;
+      items++;
 			return true;
 		}
 
 		tail->next = node;
 		tail = node;
-
+    items++;
+    
 		return true;
 	}
 
@@ -74,7 +86,7 @@ public:
 		returned.
 	*/
 	T dequeue() {
-		if (head == NULL) {
+		if ((items == 0) || (head == NULL)) {
 			return T();
 		}
 
@@ -88,12 +100,33 @@ public:
 			tail = NULL;
 		}
 
+    items--;
 		return item;
 	}
 
+  /*
+		Returns true if the queue
+    is empty, false otherwise.
+	*/
 	bool isEmpty() {
 		return head == NULL;
 	}
+  
+  /*
+		Returns true if the queue
+    is full, false otherwise.
+	*/
+  bool isFull() {
+		return items == max_items;
+	}
+
+  /*
+		Returns the number of items
+    in the queue.
+	*/
+  uint8_t count() {
+    return items;
+  }
 
 	/*
 		Get the front of the queue.
@@ -104,7 +137,7 @@ public:
 		returned.
 	*/
 	T front() {
-		if (head == NULL) {
+		if ((items == 0) || (head == NULL)) {
 			return T();
 		}
 
