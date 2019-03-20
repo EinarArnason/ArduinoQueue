@@ -4,12 +4,15 @@
 
 	A lightweight linked list type queue implementation,
 	meant for microcontrollers.
+	
+	Usage and further info:
+	https://github.com/EinarArnason/ArduinoQueue
 */
 
 #pragma once
 
 #if defined(ARDUINO) && ARDUINO >= 100
-#include "arduino.h"
+#include "Arduino.h"
 #else
 #include "WProgram.h"
 #endif
@@ -29,33 +32,65 @@ class DataQueue {
 			next = NULL;
 		}
 	};
-	Node* head;
-	Node* tail;
-  uint8_t max_items;
-  uint8_t items;
+	Node* _head;
+	Node* _tail;
+	unsigned int _max_items;
+	unsigned int _max_memory;
+	unsigned int _items_cnt;
+
 public:
-	DataQueue(int m_size = 100) {
-		head = NULL;
-		tail = NULL;
-    if (m_size > 255) m_size = 255;
-    if (m_size < 0) m_size = 0;
-    max_items = m_size;
-    items = 0;
+	DataQueue(unsigned int max_items = 100, unsigned int max_memory = 0) {
+		_head = NULL;
+		_tail = NULL;
+
+		/*
+			If the max memory has not
+			been defined or is 0, then
+			the queue size is set by
+			the max number of items:
+		*/
+		if (max_memory == 0) {
+			_max_items = max_items;
+			_max_memory = max_items * sizeof(T);
+		}
+		/*
+			If the max memory has been
+			set then the queue size is
+			defined by the memory size
+			when the max items is 0.
+			If the user gave a max item
+			size, then the queue size
+			will be capped by the number
+			of items.
+		*/
+		else {
+			_max_items = max_memory / sizeof(T);
+			_max_memory = _max_items * sizeof(T);
+			if (max_items != 0) {
+				if (_max_items > max_items)
+					_max_items = max_items;
+			}
+		}
+		_items_cnt = 0;
 	}
 
 	~DataQueue() {
-		for (Node* node = head; node != NULL; node = head) {
-			head = node->next;
+		for (Node* node = _head; node != NULL; node = _head) {
+			_head = node->next;
 			delete node;
 		}
 	}
 
-	// Returns false if memory is full, otherwise true
+	/*
+		Push an item to the queue.
+		Returns false if memory is
+		full, or true if the item
+		was added to queue.
+	*/
 	bool enqueue(T item) {
-    if (items == max_items) {
-      return false;
-    }
-    
+		if (_items_cnt == _max_items) {
+			return false;
+		}
 		Node* node = new Node;
 		if (node == NULL) {
 			return false;
@@ -63,17 +98,16 @@ public:
 
 		node->item = item;
 
-		if (head == NULL) {
-			head = node;
-			tail = node;
-      items++;
+		if (_head == NULL) {
+			_head = node;
+			_tail = node;
+			_items_cnt++;
 			return true;
 		}
 
-		tail->next = node;
-		tail = node;
-    items++;
-    
+		_tail->next = node;
+		_tail = node;
+		_items_cnt++;
 		return true;
 	}
 
@@ -86,50 +120,75 @@ public:
 		returned.
 	*/
 	T dequeue() {
-		if ((items == 0) || (head == NULL)) {
+		if ((_items_cnt == 0) || (_head == NULL)) {
 			return T();
 		}
 
-		Node* node = head;
-		head = node->next;
+		Node* node = _head;
+		_head = node->next;
 		T item = node->item;
 		delete node;
 		node = NULL;
-
-		if (head == NULL) {
-			tail = NULL;
+		
+		if (_head == NULL) {
+			_tail = NULL;
 		}
-
-    items--;
+		
+		_items_cnt--;
 		return item;
 	}
 
-  /*
+	/*
 		Returns true if the queue
-    is empty, false otherwise.
+		is empty, false otherwise.
 	*/
 	bool isEmpty() {
-		return head == NULL;
+		return _head == NULL;
 	}
-  
-  /*
+	
+	/*
 		Returns true if the queue
-    is full, false otherwise.
+		is full, false otherwise.
 	*/
-  bool isFull() {
-		return items == max_items;
+	bool isFull() {
+		return _items_cnt == _max_items;
 	}
-
-  /*
-		Returns the number of items
-    in the queue.
-	*/
-  uint8_t count() {
-    return items;
-  }
 
 	/*
-		Get the front of the queue.
+		Returns the number of items
+		currently in the queue.
+	*/
+	unsigned int item_count() {
+		return _items_cnt;
+	}
+	
+	/*
+		Returns the size of the
+		queue item in bytes.
+	*/
+	unsigned int item_size() {
+		return sizeof(T);
+	}
+	
+	/*
+		Returns the size of the queue
+		(maximum number of items)
+	*/
+	unsigned int max_queue_size() {
+		return _max_items;
+	}
+	
+	/*
+		Returns the size of the queue
+		(maximum size in bytes)
+	*/
+	unsigned int max_memory_size() {
+		return _max_memory;
+	}
+
+	/*
+		Get the item in the front
+		of the queue.
 		Because exceptions are not
 		usually implemented for
 		microcontrollers, if queue
@@ -137,12 +196,10 @@ public:
 		returned.
 	*/
 	T front() {
-		if ((items == 0) || (head == NULL)) {
+		if ((_items_cnt == 0) || (_head == NULL)) {
 			return T();
 		}
-
-		T item = head->item;
-
+		T item = _head->item;
 		return item;
 	}
 };
