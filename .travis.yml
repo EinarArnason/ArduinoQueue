@@ -10,6 +10,7 @@ addons:
     packages:
       - cmake-data
       - cmake
+      - ninja
 
 before_script:
   - mkdir build
