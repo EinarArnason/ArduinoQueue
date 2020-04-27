@@ -9,19 +9,11 @@ addons:
       - sourceline: "deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic main"
         key_url: "https://apt.llvm.org/llvm-snapshot.gpg.key"
     packages:
+      - cmake
       - ninja-build
       - llvm-dev
       - libclang-dev
       - clang
-
-install:
-  - wget https://github.com/Kitware/CMake/releases/download/v3.17.1/cmake-3.17.1.tar.gz
-  - tar -zxvf cmake-3.17.1.tar.gz
-  - cd cmake-3.17.1
-  - ./bootstrap
-  - make
-  - sudo make install
-  - cmake --version
 
 before_script:
   - mkdir build
