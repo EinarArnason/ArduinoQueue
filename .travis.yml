@@ -29,4 +29,5 @@ before_script:
 
 script:
   - cmake --build build --config Debug --target all
+  - cd build
   - ctest -C Debug -T test --output-on-failure
