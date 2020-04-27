@@ -14,7 +14,7 @@ addons:
 
 before_script:
   - mkdir build
-  - cmake --no-warn-unused-cli -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -DCMAKE_BUILD_TYPE:STRING=Debug -DCMAKE_C_COMPILER:FILEPATH=/usr/bin/clang-10 -H./ -Bbuild -G Ninja
+  - cmake --no-warn-unused-cli -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -DCMAKE_BUILD_TYPE:STRING=Debug -H./ -Bbuild -G Ninja
 
 script:
   - cmake --build build --config Debug --target all
