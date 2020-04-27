@@ -1,16 +1,12 @@
+os: linux
 language: cpp
+compiler: clang
 
-compiler:
-  - clang
-
+dist: bionic
 addons:
-  apt:
-    sources:
-      - george-edison55-precise-backports
-    packages:
-      - cmake-data
-      - cmake
-      - ninja-build
+  snaps:
+    - cmake
+    - ninja-build
 
 before_script:
   - mkdir build
