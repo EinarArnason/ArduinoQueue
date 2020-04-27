@@ -30,7 +30,7 @@ ArduinoQueue<T> intQueue(maximum_number_of_items, maximum_size_in_bytes);
 Include the header file on your code:
 
 ```C++
-#include <Queue.h>
+#include <ArduinoQueue.h>
 ```
 
 Then create the queue according to your needs, examples:
