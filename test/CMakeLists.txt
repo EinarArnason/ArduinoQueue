@@ -3,6 +3,9 @@ project(test_ArduinoQueue VERSION 0.1.0)
 
 # Testing library
 include(FetchContent)
+if(${CMAKE_VERSION} VERSION_LESS 3.14)
+    include(cmake/add_FetchContent_MakeAvailable.cmake)
+endif()
 FetchContent_Declare(
 catch2
 GIT_REPOSITORY https://github.com/catchorg/Catch2.git
