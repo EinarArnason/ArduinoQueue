@@ -1,5 +1,7 @@
 # ArduinoQueue
 
+[![Build Status](https://travis-ci.org/EinarArnason/ArduinoQueue.svg?branch=dev)](https://travis-ci.org/EinarArnason/ArduinoQueue)
+
 A lightweight linked list type queue implementation, meant for microcontrollers.
 Written as a C++ template class.
 

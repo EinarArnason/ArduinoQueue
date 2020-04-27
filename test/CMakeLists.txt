@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 3.11.0)
-project(test_ArduinoQueue VERSION 0.1.0)
+project(test_ArduinoQueue VERSION 1.2.0)
 
-# Testing library
 include(FetchContent)
 
+# Testing library
 FetchContent_Declare(
 catch2
 GIT_REPOSITORY https://github.com/catchorg/Catch2.git
@@ -19,13 +19,13 @@ else()
     FetchContent_MakeAvailable(catch2)
 endif()
 
-
-add_executable(${PROJECT_NAME} ${PROJECT_SOURCE_DIR}/${PROJECT_NAME}.cpp)
-
-target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_17)
-
-target_link_libraries(${PROJECT_NAME} PRIVATE ArduinoQueue Catch2::Catch2)
-add_test(NAME ArduinoQueueTest COMMAND ${PROJECT_NAME})
+set(TESTS test_IntQueue)
+foreach(test ${TESTS})
+    add_executable(${test} ${PROJECT_SOURCE_DIR}/${test}.cpp)
+    target_compile_features(${test} PRIVATE cxx_std_17)
+    target_link_libraries(${test} PRIVATE ArduinoQueue Catch2::Catch2)
+    add_test(NAME ${test} COMMAND ${test})
+endforeach(test ${TESTS})
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
