@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.14.0)
+cmake_minimum_required(VERSION 3.11.0)
 project(test_ArduinoQueue VERSION 0.1.0)
 
 # Testing library
