@@ -1,0 +1,25 @@
+os: linux
+language: cpp
+compiler: clang
+
+dist: bionic
+addons:
+  apt:
+    sources:
+      - sourceline: "deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic main"
+        key_url: "https://apt.llvm.org/llvm-snapshot.gpg.key"
+    packages:
+      - cmake
+      - ninja-build
+      - llvm-dev
+      - libclang-dev
+      - clang
+
+before_script:
+  - mkdir build
+  - cmake --no-warn-unused-cli -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=TRUE -DCMAKE_BUILD_TYPE:STRING=Debug -H./ -Bbuild -G Ninja
+
+script:
+  - cmake --build build --config Debug --target all
+  - cd build
+  - ctest -C Debug -T test --output-on-failure

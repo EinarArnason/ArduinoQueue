@@ -12,13 +12,13 @@
 	https://github.com/EinarArnason/ArduinoQueue
 */
 
-#include "Queue.h"
+#include "ArduinoQueue.h"
 
 #define QUEUE_SIZE_ITEMS 10
 #define QUEUE_SIZE_BYTES 10
 
 // Queue creation:
-DataQueue<int> intQueue(QUEUE_SIZE_ITEMS, QUEUE_SIZE_BYTES);
+ArduinoQueue<int> intQueue(QUEUE_SIZE_ITEMS, QUEUE_SIZE_BYTES);
 
 void printQueueStats() {
 	Serial.println("");
