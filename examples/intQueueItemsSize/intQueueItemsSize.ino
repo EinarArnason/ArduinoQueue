@@ -15,7 +15,7 @@
 #define QUEUE_SIZE_ITEMS 10
 
 // Queue creation:
-DataQueue<int> intQueue(QUEUE_SIZE_ITEMS);
+ArduinoQueue<int> intQueue(QUEUE_SIZE_ITEMS);
 
 void printQueueStats() {
 	Serial.println("");
