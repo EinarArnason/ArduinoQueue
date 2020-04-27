@@ -3,15 +3,22 @@ project(test_ArduinoQueue VERSION 0.1.0)
 
 # Testing library
 include(FetchContent)
-if(${CMAKE_VERSION} VERSION_LESS 3.14)
-    include(add_FetchContent_MakeAvailable.cmake)
-endif() 
+
 FetchContent_Declare(
 catch2
 GIT_REPOSITORY https://github.com/catchorg/Catch2.git
 GIT_TAG        v2.9.1
 )
-FetchContent_MakeAvailable(catch2)
+if(${CMAKE_VERSION} VERSION_LESS 3.14)
+    FetchContent_GetProperties(catch2)
+    if(NOT catch2_POPULATED)
+      FetchContent_Populate(catch2)
+      add_subdirectory(${catch2_SOURCE_DIR} ${catch2_BINARY_DIR})
+    endif()
+else()
+    FetchContent_MakeAvailable(catch2)
+endif()
+
 
 add_executable(${PROJECT_NAME} ${PROJECT_SOURCE_DIR}/${PROJECT_NAME}.cpp)
 
