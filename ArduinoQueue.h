@@ -17,9 +17,10 @@
 #include "WProgram.h"
 #endif
 
-template <typename T> class ArduinoQueue {
+template <typename T>
+class ArduinoQueue {
   class Node {
-  public:
+   public:
     T item;
     Node *next;
 
@@ -34,7 +35,7 @@ template <typename T> class ArduinoQueue {
   unsigned int _max_memory;
   unsigned int _items_cnt;
 
-public:
+ public:
   ArduinoQueue(unsigned int max_items = 100, unsigned int max_memory = 0) {
     _head = nullptr;
     _tail = nullptr;
@@ -63,8 +64,7 @@ public:
       _max_items = max_memory / sizeof(T);
       _max_memory = _max_items * sizeof(T);
       if (max_items != 0) {
-        if (_max_items > max_items)
-          _max_items = max_items;
+        if (_max_items > max_items) _max_items = max_items;
       }
     }
     _items_cnt = 0;
@@ -179,11 +179,23 @@ public:
           is empty, a dummy item is
           returned.
   */
-  T front() {
+  T head() {
     if ((_items_cnt == 0) || (_head == nullptr)) {
       return T();
     }
+
     T item = _head->item;
     return item;
   }
+
+  T tail() {
+    if ((_items_cnt == 0) || (_head == nullptr)) {
+      return T();
+    }
+
+    T item = _tail->item;
+    return item;
+  }
+
+  T front() { return head(); }
 };
