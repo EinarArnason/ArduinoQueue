@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0.0)
-project(ArduinoQueue VERSION 1.2.0)
+project(ArduinoQueue VERSION 1.2.2)
 
 include(CTest)
 enable_testing()
