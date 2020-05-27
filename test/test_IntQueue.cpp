@@ -17,14 +17,14 @@ TEST_CASE("List has one element", "[single-file]") {
 }
 
 TEST_CASE("Concistency with multiple items", "[single-file]") {
-  ArduinoQueue<int> ints(1000);
+  ArduinoQueue<int> ints;
   for (int i = 0; i < 1000; ++i) {
     ints.enqueue(i);
   }
 
   REQUIRE(ints.isEmpty() == false);
-  REQUIRE(ints.head() == 0);
-  REQUIRE(ints.tail() == 999);
+  REQUIRE(ints.getHead() == 0);
+  REQUIRE(ints.getTail() == 999);
 
   for (int i = 0; i < 1000; i++) {
     REQUIRE(ints.dequeue() == i);
