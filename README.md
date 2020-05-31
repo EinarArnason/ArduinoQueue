@@ -95,4 +95,4 @@ RAM: DDR4L
 Benchmark result (1000 samples):  
 Enqueued 1000000 ints in average 0.018749799 seconds  
 Dequeued 1000000 ints in average 0.016496857 seconds  
-Allocated 16 MB
+Allocated 15.2588 MB (16 bytes per item)
