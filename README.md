@@ -5,7 +5,7 @@
 A lightweight linked list type queue implementation, meant for microcontrollers.
 Written as a C++ template class.
 
-## Constructors:
+## Constructors
 
 Creates a queue up to _<maximum_number_of_items>_ items:
 
@@ -25,7 +25,7 @@ Creates a queue up to _<maximum_number_of_items>_ items or _<maximum_size_in_byt
 ArduinoQueue<T> intQueue(maximum_number_of_items, maximum_size_in_bytes);
 ```
 
-## How to use:
+## How to use
 
 Include the header file on your code:
 
@@ -64,7 +64,7 @@ Finally use the following functions:
 intQueue.enqueue(1);    // Adds number 1 to the queue
 intQueue.enqueue(123);    // Adds number 123 to the queue
 int number = intQueue.dequeue();    // Will return number 1 and remove it from the queue
-int number = intQueue.head();    // Will return number 123 but leave it still in the queue
+int number = intQueue.getHead();    // Will return number 123 but leave it still in the queue
 int number = intQueue.dequeue();    // Will return number 123 and remove it from the queue
 ```
 
@@ -79,8 +79,20 @@ unsigned int n = intQueue.maxQueueSize();    // Returns the maximum possible siz
 unsigned int n = intQueue.maxMemorySize();    // Returns the maximum possible size of the queue (bytes)*
 ```
 
-## Notes
+## Thread safety
 
-Note that while the Queue class cleans up the nodes in memory after destructor or dequeue is called, it keeps a copy of the item being queued. So for example if you are queuing pointers, you will need to keep track of the memory behind them.
+This library is **not** thread safe. Mutexes are often hardware specific on the way they are optimized to operate. So for the sake of performance and portability, it is left out.
 
-*For example if you create a queue of *int* on an ESP8266, where each *int* has a size of 4 bytes and you specify the queue sizes to be up to 10 items and 10 bytes on the constructor, actually the real values will be 2 items and 8 bytes. These will be the values returned by *maxQueueSize()* and *maxMemorySize()\*.
+## Memory safety
+
+The memory for the queue nodes are dynamically allocated. Note that while the Queue class cleans up the nodes in memory after destructor or dequeue is called, it keeps a copy of the item being queued. So for example if you are queuing pointers, you will need to keep track of the memory behind them.
+
+## Performance
+
+CPU: Intel i7-6500U  
+RAM: DDR4L
+
+Benchmark result (1000 samples):  
+Enqueued 1000000 ints in average 0.018749799 seconds  
+Dequeued 1000000 ints in average 0.016496857 seconds  
+Allocated 16 MB

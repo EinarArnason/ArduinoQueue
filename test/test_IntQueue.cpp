@@ -23,10 +23,10 @@ TEST_CASE("Concistency with multiple items", "[single-file]") {
   }
 
   REQUIRE(ints.isEmpty() == false);
-  REQUIRE(ints.getHead() == 0);
-  REQUIRE(ints.getTail() == 999);
 
   for (int i = 0; i < 1000; i++) {
+    REQUIRE(ints.getHead() == i);
+    REQUIRE(ints.getTail() == 999);
     REQUIRE(ints.dequeue() == i);
   }
 }

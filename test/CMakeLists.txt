@@ -19,7 +19,7 @@ else()
     FetchContent_MakeAvailable(catch2)
 endif()
 
-set(TESTS test_IntQueue)
+set(TESTS test_IntQueue test_performance)
 foreach(test ${TESTS})
     add_executable(${test} ${PROJECT_SOURCE_DIR}/${test}.cpp)
     target_compile_features(${test} PRIVATE cxx_std_17)
