@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.11.0)
-project(test_ArduinoQueue VERSION 1.2.2)
+project(test_ArduinoQueue VERSION 1.2.3)
 
 include(FetchContent)
 
