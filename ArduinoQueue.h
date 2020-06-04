@@ -17,6 +17,10 @@
 #include "WProgram.h"
 #endif
 
+#if __cplusplus <= 199711L
+#define nullptr NULL
+#endif
+
 template <typename T>
 class ArduinoQueue {
   class Node {
@@ -185,6 +189,22 @@ class ArduinoQueue {
 
     T item = tail->item;
     return item;
+  }
+
+  T* getHeadPtr() {
+    if ((count == 0) || (head == nullptr)) {
+      return nullptr;
+    }
+
+    return &(head->item);
+  }
+
+  T* getTailPtr() {
+    if ((count == 0) || (head == nullptr)) {
+      return nullptr;
+    }
+
+    return &(tail->item);
   }
 
   /*
