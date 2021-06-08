@@ -12,7 +12,7 @@
         https://github.com/EinarArnason/ArduinoQueue
 */
 
-#include "ArduinoQueue.h"
+#include <ArduinoQueue.h>
 
 #define QUEUE_SIZE_ITEMS 10
 #define QUEUE_SIZE_BYTES 10
